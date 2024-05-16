@@ -4,18 +4,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import roomescape.domain.Reservation;
+import roomescape.domain.ReservationRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class RoomescapeController {
+public class ReservationController {
 
-    List<Reservation> reservations = new ArrayList<Reservation>();
+    private final ReservationRepository reservationRepository;
 
-    @GetMapping("/")
-    public String welcomePage() {
-        return "home";
+    public ReservationController(ReservationRepository repository) {
+        this.reservationRepository = repository;
     }
 
     @GetMapping("/reservation")
@@ -25,7 +24,7 @@ public class RoomescapeController {
 
     @GetMapping("/reservations")
     public ResponseEntity<List<Reservation>> checkReservations() {
-        reservations.add(new Reservation(1L, "hkj", "2024", "05-11"));
+        List<Reservation> reservations = reservationRepository.findAll();
         return ResponseEntity.ok(reservations);
     }
 }
